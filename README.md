@@ -138,8 +138,8 @@ byte index  | description
 3 | Fix quality (2 bits), locked satellites (6 bits, invalid value 0x3F)
 4-7 | Latitude in (degrees * 10_000_000), signed 2's complement, invalid value 0x7FFFFFFF
 8-11 | Longitude in (degrees * 10_000_000), signed 2's complement, invalid value 0x7FFFFFFF
-12-13 | Altitude (((meters + 500) * 10) & 0x7FFF) or (((meters + 500) & 0x7FFF) | 0x8000), invalid value 0xFFFF
-14-15 | Speed in ((knots * 100) & 0x7FFF) or (((knots * 10) & 0x7FFF) | 0x8000), invalid value 0xFFFF
+12-13 | Altitude (((meters + 500) * 10) & 0x7FFF) or (((meters + 500) & 0x7FFF) \| 0x8000), invalid value 0xFFFF
+14-15 | Speed in ((knots * 100) & 0x7FFF) or (((knots * 10) & 0x7FFF) \| 0x8000), invalid value 0xFFFF
 16-17 | Bearing (degrees * 100), invalid value 0xFFFF
 18 | HDOP (dop * 10), invalid value 0xFF
 19 | VDOP (dop * 10), invalid value 0xFF
