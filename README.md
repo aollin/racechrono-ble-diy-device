@@ -58,8 +58,8 @@ The CAN-Bus module needs to be connected to USB power. The 3.3 V outputs are not
 | USB | VCC
 | GND | GND
 | MISO | SO
-| MOSI | SI
-| SCK | SCK
+| MOSI | SI
+| SCK | SCK
 | A5 | INT
 | A4 | SC
 
