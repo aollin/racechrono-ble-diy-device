@@ -33,7 +33,7 @@ Part | Price
 ----- | --------
 Adafruit Feather nRF52 Bluefruit (nRF52832) | $25
 Adafruit Ultimate GPS Breakout v3 | $40 (optional)
-MCP2515 breakout board | $5-10 (optional)
+MCP2515 breakout board | $5-10 (optional)
 Connecting wires |
 Casing |
 
@@ -47,7 +47,7 @@ The nRF52832 board has only one hardware serial port, so connecting it causes us
 | 3.3V | VIN
 | GND | GND
 | TX | RX
-| RX | TX
+| RX | TX
 
 # Connecting the CAN-Bus module
 
