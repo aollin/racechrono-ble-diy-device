@@ -10,6 +10,8 @@ The device described here is in no way ready as a product. The CAN-Bus part has 
 
 To build a DIY devices like this will always need some knowledge about programming and electronics. Also some soldering skills are required. Also going through some Arduino tutorials will help a lot. Here's how to setup the Arduino IDE to be used with the Adafruit board: https://github.com/MagnusThome/RejsaRubberTrac/blob/master/installArduino.md
 
+In addition to the skills required to build the device, you'll need some skills and knowledge to either reverse engineer the CAN-Bus packets on your vehicle, or find them already reverse engineered from somewhere.
+
 # Performance
 
 This device as CAN-Bus reader alone (without GPS) will achieve ~20 Hz update rate when monitoring 5 different CAN-Bus PIDs. With a GPS board added, the update rate will drop to 10 Hz, probably due to the Bluetooth LE chip that is used here. The characteristic UUID 3 in notify mode (used for GPS data) will halve the performance of the characteristic UUID 1 (used for CAN-Bus data). The GPS board runs at 5 Hz in this example, but can probably be made to run at 10 Hz with some configuration.
