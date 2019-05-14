@@ -10,7 +10,7 @@ The device described here is in no way ready as a product. The CAN-Bus part has 
 
 To build a DIY devices like this will always need some knowledge about programming and electronics. Also some soldering skills are required. Also going through some Arduino tutorials will help a lot. Here's how to setup the Arduino IDE to be used with the Adafruit board: https://github.com/MagnusThome/RejsaRubberTrac/blob/master/installArduino.md
 
-In addition to the skills required to build the device, you'll need some skills and knowledge to either reverse engineer the CAN-Bus packets on your vehicle, or find them already reverse engineered from somewhere.
+In addition to the skills required to build the device, you'll need some skills and knowledge to either reverse engineer the CAN-Bus packets on your vehicle, or find them already reverse engineered from somewhere. The packets are different on every manufacturer, and can differ from model to model due to changes in subcontractors and upgrades in the used components.
 
 # Performance
 
