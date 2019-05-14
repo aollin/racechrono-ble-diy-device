@@ -71,7 +71,7 @@ If you've connected only the GPS module, it's enough to connect a battery to the
 | --------------------------------------------------- | --------------------- | --------------------
 | USB | V-out | -
 | GND | GND   | GND
-|     | V-in  | 12V
+| -   | V-in  | 12V
 
 
 
