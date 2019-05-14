@@ -71,7 +71,7 @@ Adafruit Feather nRF52 Bluefruit (nRF52832) | Step down module | External powe
 --------------------------------------------------- | --------------------- | --------------------
 USB | V-out |
 GND | GND | GND
-  | V-in | 12V
+         | V-in | 12V
 
 
 
