@@ -120,7 +120,7 @@ byte index  | description
 
 ### Allow one PID
 
-Allows all incoming packet IDs. Used for "promiscuous mode".
+Allows one PID to go through (used after Deny all command). Multiple calls will allow multiple PIDs to go through.
 
 byte index  | description
 ------ | -----------------------------------------------------------------------------------------------------------------
