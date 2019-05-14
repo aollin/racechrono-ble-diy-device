@@ -43,7 +43,7 @@ The nRF52832 board has only one hardware serial port, so connecting it causes us
 
 
 Adafruit Feather nRF52 Bluefruit (nRF52832) | Adafruit Ultimate GPS Breakout v3
---------------------------------------------------- | -----------------------
+--------------------------------------------------- | ---------------------------------------
 3.3V | VIN
 GND | GND
 TX | RX
@@ -54,7 +54,7 @@ RX | TX
 The CAN-Bus module needs to be connected to USB power. The 3.3 V outputs are not sufficient, as the board requires 5V.
 
 Adafruit Feather nRF52 Bluefruit (nRF52832) | MCP2515 breakout
---------------------------------------------------- | -----------------------
+--------------------------------------------------- | -----------------------
 USB | VCC
 GND | GND
 MISO | SO
