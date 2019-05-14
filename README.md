@@ -105,7 +105,7 @@ Allows all incoming packet IDs. Used for "promiscuous mode".
 
 byte index  | description
 ------ | -----------------------------------------------------------------------------------------------------------------
-0 | Command ID = 0
+0 | Command ID = 1
 1-2 | Notify interval (PID specific notify interval in milliseconds)
 
 ### Allow one PID
@@ -114,7 +114,7 @@ Allows all incoming packet IDs. Used for "promiscuous mode".
 
 byte index  | description
 ------ | -----------------------------------------------------------------------------------------------------------------
-0 | Command ID = 0
+0 | Command ID = 2
 1-2 | Notify interval (PID specific notify interval in milliseconds)
 3-6 | 32-bit PID to allow
 
