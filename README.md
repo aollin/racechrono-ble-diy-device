@@ -1,4 +1,4 @@
-# RaceChrono Bluetooth LE DIY device (GPS and CAN-Bus) 
+# RaceChrono BLE DIY device (GPS and CAN-Bus) 
 
 This project describes a reference "Do it yourself" or "DIY" device to be used with RaceChrono Pro mobile app. The device consists of the main Adafruit board, and GPS and/or CAN-Bus boards.
 
