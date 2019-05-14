@@ -63,7 +63,7 @@ The CAN-Bus module needs to be connected to USB power. The 3.3 V outputs are not
 
 # Connecting to power
 
-If you've connected only the GPS module, it's enough to connect a battery to the battery connector onboard the nRF52. If you're connected the MCP2515, you'll need higher voltage, meaning you'll need to either connect to the USB port or somehow else power the USB pin. One option is to connect a 6-18 V => 5 V stepdown.
+If you've connected only the GPS module, it's enough to connect a battery to the battery connector onboard the nRF52. If you're connected the MCP2515, you'll need higher voltage, meaning you'll need to either connect to the USB port or somehow else power the USB pin. One option is to connect a ~12 V => 5 V stepdown.
 
 | Adafruit Feather nRF52 Bluefruit (nRF52832) | Step down module 5 V | External power
 | --------------------------------------------------- | --------------------- | --------------------
