@@ -1,19 +1,69 @@
+#include <CAN.h>
+#include <Wire.h>
 #include <Adafruit_GPS.h>
 #include <SoftwareSerial.h>
 #include <bluefruit.h>
+#include "PacketIdInfo.h"
+
+//
+// Disable if you do not have CAN-Bus board connected
+//
+//#define HAS_CAN_BUS
+
+//
+// Disable if you do not have GPS board connected
+//
+#define HAS_GPS
 
 BLEService mainService = BLEService(0x00000001000000fd8933990d6f411ff8);
+uint8_t tempData[20];
+int ledState = LOW;
+
+#ifdef HAS_CAN_BUS
+BLECharacteristic canBusMainCharacteristic   = BLECharacteristic (0x01);
+BLECharacteristic canBusFilterCharacteristic = BLECharacteristic (0x02);
+
+static const int CAN_BUS_CMD_DENY_ALL = 0;
+static const int CAN_BUS_CMD_ALLOW_ALL = 1;
+static const int CAN_BUS_CMD_ADD_PID = 2;
+PacketIdInfo canBusPacketIdInfo;
+bool canBusAllowUnknownPackets = false;
+uint32_t canBusLastNotifyMs = 0;
+boolean isCanBusConnected = false;
+
+#endif
+
+#ifdef HAS_GPS
 BLECharacteristic gpsMainCharacteristic = BLECharacteristic (0x03);
 BLECharacteristic gpsTimeCharacteristic = BLECharacteristic (0x04);
 
+Adafruit_GPS* gps = NULL;
+int gpsPreviousDateAndHour = 0;
+uint8_t gpsSyncBits = 0;
+
+#endif
+
 void bluetoothSetupMainService(void) {
     mainService.begin();
+
+#ifdef HAS_CAN_BUS
+    canBusMainCharacteristic.setProperties(CHR_PROPS_NOTIFY | CHR_PROPS_READ);
+    canBusMainCharacteristic.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
+    canBusMainCharacteristic.begin();
+    canBusFilterCharacteristic.setProperties(CHR_PROPS_WRITE);
+    canBusFilterCharacteristic.setPermission(SECMODE_NO_ACCESS, SECMODE_OPEN);
+    canBusFilterCharacteristic.setWriteCallback(*canBusFilterWriteCallback);
+    canBusFilterCharacteristic.begin();
+#endif
+    
+#ifdef HAS_GPS
     gpsMainCharacteristic.setProperties(CHR_PROPS_NOTIFY | CHR_PROPS_READ);
     gpsMainCharacteristic.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
     gpsMainCharacteristic.begin();
     gpsTimeCharacteristic.setProperties(CHR_PROPS_NOTIFY | CHR_PROPS_READ);
     gpsTimeCharacteristic.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
     gpsTimeCharacteristic.begin();
+#endif
 }
 
 void bluetoothStartAdvertising(void) {
@@ -40,53 +90,106 @@ void bluetoothStart() {
     bluetoothStartAdvertising(); 
 }
 
-Adafruit_GPS* gps = NULL;
-int ledState = LOW;
-int previousDateAndHour = 0;
-uint8_t syncBits = 0;
-uint8_t tempData[20];
+#ifdef HAS_CAN_BUS
+void canBusNotifyLatestPacket(BLECharacteristic* characteristic) {
+    // Set packet id
+    ((uint32_t*)tempData)[0] = CAN.packetId();
 
-void gpsStart() {
+    // Set packet payload
+    int pos = 4;
+    int dataByte = CAN.read();
+    while (dataByte != -1 && pos < sizeof(tempData)) {
+        tempData[pos] = (uint8_t)dataByte;
+        dataByte = CAN.read();
+        pos++;
+    }
+
+    // Notify
+    characteristic->notify(tempData, pos);
+}
+
+void canBusFilterWriteCallback(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t offset) {
+    if (len < 1) {
+        return;
+    }
+    uint8_t command = data[0];
+    switch (command) {
+        case CAN_BUS_CMD_DENY_ALL:
+            if (len == 1) {
+                canBusPacketIdInfo.reset();
+                canBusAllowUnknownPackets = false;
+            }
+            break;
+        case CAN_BUS_CMD_ALLOW_ALL:
+            if (len == 3) {
+                canBusPacketIdInfo.reset();
+                uint16_t notifyIntervalMs = *((uint16_t*)(data + 1));
+                canBusPacketIdInfo.setDefaultNotifyInterval(notifyIntervalMs); 
+                canBusAllowUnknownPackets = true;
+            }
+            break;
+        case CAN_BUS_CMD_ADD_PID:
+            if (len == 7) {
+                uint16_t notifyIntervalMs = *((uint16_t*)(data + 1));
+                uint32_t pid = *((uint32_t*)(data + 3));
+                canBusPacketIdInfo.setNotifyInterval(pid, notifyIntervalMs);
+            }
+            break;
+        default:
+            break;         
+    }  
+}
+
+void canBusSetup() {
+    // Ininitialize CAN board
+    CAN.setClockFrequency(8E6);
+    CAN.setPins(28, 29);
+}
+
+void canBusLoop() {
+    // Manage CAN-Bus connection
+    if (!isCanBusConnected && Bluefruit.connected()) {
+        // Connect to CAN-Bus
+        if (CAN.begin(500E3)) {
+            isCanBusConnected = true;
+        } else {
+            delay(3000);
+        }
+
+        // Clear info
+        canBusPacketIdInfo.reset();
+    } else if (isCanBusConnected && !Bluefruit.connected()) {
+        // Disconnect from CAN-Bus
+        CAN.end();
+        isCanBusConnected = false;      
+    }
+
+    // Handle CAN-Bus data
+    if (isCanBusConnected) {
+        // Try to parse packet
+        int packetSize = CAN.parsePacket();
+        if (packetSize > 0) {
+            // received a packet
+            uint32_t packetId = CAN.packetId();
+            PacketIdInfoItem* infoItem = canBusPacketIdInfo.findItem(packetId, canBusAllowUnknownPackets);
+            if (infoItem && infoItem->shouldNotify()) {
+                canBusNotifyLatestPacket(&canBusMainCharacteristic);    
+                infoItem->markNotified();
+            }
+        }
+    }
+}
+#endif
+
+#ifdef HAS_GPS
+void gpsSetup() {
     gps = new Adafruit_GPS(&Serial);
     gps->begin(9600);
     gps->sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
     gps->sendCommand(PMTK_SET_NMEA_UPDATE_5HZ);    
 }
 
-void setup() {
-    bluetoothStart();
-    gpsStart();
-    pinMode(LED_RED, OUTPUT);
-    digitalWrite(LED_RED, ledState);
-}
-
-//
-// All values are big-endian and unsigned if not stated otherwise
-// 
-// Main characteristic (UUID 3)
-//
-// byte
-// index
-// 0-2   Sync bits (3 bits) and time from hour start (21 bits = (minute * 30000) + (seconds * 500) + (milliseconds / 2))
-// 3     Fix quality (2 bits), locked satellites (6 bits)
-// 4-7   Latitude in (degrees * 6_000_000, or minutes * 100_000), signed 2's complement, invalid value 0x7FFFFFFF
-// 8-11  Longitude in (degrees * 6_000_000, or minutes * 100_000), signed 2's complement, invalid value 0x7FFFFFFF
-// 12-13 Altitude (((meters + 500) * 10) & 0x7FFF) or (((meters + 500) & 0x7FFF) | 0x8000), invalid value 0xFFFF
-// 14-15 Speed in ((knots * 100) & 0x7FFF) or (((knots * 10) & 0x7FFF) | 0x8000), invalid value 0xFFFF
-// 16-17 Bearing (degrees * 100), invalid value 0xFFFF
-// 18    HDOP (dop * 10), invalid value 0xFF
-// 19    VDOP (dop * 10), invalid value 0xFF
-//
-// Time characteristic (UUID 4)
-//
-// byte
-// index
-// 3     Sync bits (3 bits) and hour and date (21 bits = (year - 2000) * 8928 + (month - 1) * 744 + (day - 1) * 24 + hour)
-//
-// The two characteristics should be matched by comparing the sync bits. If sync bits differ, then either of the characteristics should be updated.
-//
-
-void loop() {
+void gpsLoop() {
     char c = gps->read();
     if (gps->newNMEAreceived() && gps->parse(gps->lastNMEA())) {
         // Toggle red LED every time valid NMEA is received
@@ -95,9 +198,9 @@ void loop() {
 
         // Calculate date field
         int dateAndHour = (gps->year * 8928) + ((gps->month-1) * 744) + ((gps->day-1) * 24) + gps->hour;
-        if (previousDateAndHour != dateAndHour) {
-            previousDateAndHour = dateAndHour;
-            syncBits++;
+        if (gpsPreviousDateAndHour != dateAndHour) {
+            gpsPreviousDateAndHour = dateAndHour;
+            gpsSyncBits++;
         }
 
         // Calculate time field
@@ -113,7 +216,7 @@ void loop() {
         int bearing = max(0, round(gps->angle * 100.f));
 
         // Create main data
-        tempData[0] = ((syncBits & 0x7) << 5) | ((timeSinceHourStart >> 16) & 0x1F);
+        tempData[0] = ((gpsSyncBits & 0x7) << 5) | ((timeSinceHourStart >> 16) & 0x1F);
         tempData[1] = timeSinceHourStart >> 8;
         tempData[2] = timeSinceHourStart;
         tempData[3] = ((min(0x3, gps->fixquality) & 0x3) << 6) | ((min(0x3F, gps->satellites)) & 0x3F);
@@ -138,11 +241,33 @@ void loop() {
         gpsMainCharacteristic.notify(tempData, 20);
 
         // Create time data
-        tempData[0] = ((syncBits & 0x7) << 5) | ((previousDateAndHour >> 16) & 0x1F);
-        tempData[1] = previousDateAndHour >> 8;
-        tempData[2] = previousDateAndHour;
+        tempData[0] = ((gpsSyncBits & 0x7) << 5) | ((dateAndHour >> 16) & 0x1F);
+        tempData[1] = dateAndHour >> 8;
+        tempData[2] = dateAndHour;
 
         // Notify time characteristics
         gpsTimeCharacteristic.notify(tempData, 3);
     }
+}
+#endif
+
+void setup() {
+    bluetoothStart();
+    pinMode(LED_RED, OUTPUT);
+    digitalWrite(LED_RED, ledState);
+#ifdef HAS_CAN_BUS
+    canBusSetup();
+#endif
+#ifdef HAS_GPS
+    gpsSetup();
+#endif    
+}
+
+void loop() {
+#ifdef HAS_CAN_BUS
+    canBusLoop();
+#endif
+#ifdef HAS_GPS
+    gpsLoop();
+#endif      
 }
