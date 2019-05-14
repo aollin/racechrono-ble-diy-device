@@ -123,15 +123,15 @@ void canBusFilterWriteCallback(BLECharacteristic& chr, uint8_t* data, uint16_t l
         case CAN_BUS_CMD_ALLOW_ALL:
             if (len == 3) {
                 canBusPacketIdInfo.reset();
-                uint16_t notifyIntervalMs = *((uint16_t*)(data + 1));
+                uint16_t notifyIntervalMs = data[1] << 8 | data[2];
                 canBusPacketIdInfo.setDefaultNotifyInterval(notifyIntervalMs); 
                 canBusAllowUnknownPackets = true;
             }
             break;
         case CAN_BUS_CMD_ADD_PID:
             if (len == 7) {
-                uint16_t notifyIntervalMs = *((uint16_t*)(data + 1));
-                uint32_t pid = *((uint32_t*)(data + 3));
+                uint16_t notifyIntervalMs = data[1] << 8 | data[2];
+                uint32_t pid = data[3] << 24 | data[4] << 16 | data[5] << 8 | data[6];
                 canBusPacketIdInfo.setNotifyInterval(pid, notifyIntervalMs);
             }
             break;

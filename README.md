@@ -1,9 +1,56 @@
 # diy-ble-gps
 
+# Protocol description
 
-All values are big-endian and unsigned if not stated otherwise
+The protocol for this device is built on Bluetooth LE so that RaceChrono on both Android and iOS phones can connect to it.
 
-# GPS main characteristic (UUID 3)
+## Bluetooth LE service
+
+The device has one service that contains four characteristics. The service UUID is 00001ff8-0000-1000-8000-00805f9b34fb. All characteristic values are big-endian and unsigned if not stated otherwise.
+
+## CAN-Bus main characteristic (UUID 1)
+
+This characteristic is read and notify only.
+
+byte index  | description
+------ | -----------------------------------------------------------------------------------------------------------------
+0-3 | 32-bit packet ID
+4-11 | 8 bytes of raw packet payload
+
+## CAN-Bus filter characteristic (UUID 2)
+
+This characteristic is write only.
+
+### Deny all
+
+Denies all incoming packet IDs. Called before exceptions for specific PIDs.
+
+byte index  | description
+------ | -----------------------------------------------------------------------------------------------------------------
+0 | Command ID = 0
+
+### Allow all
+
+Allows all incoming packet IDs. Used for "promiscuous mode".
+
+byte index  | description
+------ | -----------------------------------------------------------------------------------------------------------------
+0 | Command ID = 0
+1-2 | Notify interval (PID specific notify interval in milliseconds)
+
+### Allow one PID
+
+Allows all incoming packet IDs. Used for "promiscuous mode".
+
+byte index  | description
+------ | -----------------------------------------------------------------------------------------------------------------
+0 | Command ID = 0
+1-2 | Notify interval (PID specific notify interval in milliseconds)
+3-6 | 32-bit PID to allow
+
+## GPS main characteristic (UUID 3)
+
+This characteristic is read and notify only.
 
 byte index  | description
 ------ | -----------------------------------------------------------------------------------------------------------------
@@ -17,13 +64,15 @@ byte index  | description
 18 | HDOP (dop * 10), invalid value 0xFF
 19 | VDOP (dop * 10), invalid value 0xFF
 
-# GPS time characteristic (UUID 4)
+## GPS time characteristic (UUID 4)
+
+This characteristic is read and notify only.
 
  byte index | description
  ----------- | ----------------------------------
  0-3 | Sync bits (3 bits) and hour and date (21 bits = (year - 2000) * 8928 + (month - 1) * 744 + (day - 1) * 24 + hour)
 
-The two GPS characteristics should be matched by comparing the sync bits. If sync bits differ, then either of the characteristics should be updated.
+The two GPS characteristics should be matched by comparing the sync bits. If sync bits differ, then the client waits for either of the characteristics to update.
 
 # Parts list
 
