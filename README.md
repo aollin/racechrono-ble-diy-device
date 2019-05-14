@@ -51,7 +51,7 @@ The nRF52832 board has only one hardware serial port, so connecting it causes us
 
 Software serial port is not an option as the Bluetooth library interrupts take too long, so the input goes to garbage. 
 
-This particular GPS board can take both 3.3 V and 5.0 V input, so you can use either the USB rail or 3.3 V output from the Adafruit to power up the GPS.
+This particular GPS board can take both 3.3 V and 5.0 V input, so you can use either the USB rail or 3.3 V output from the Adafruit to power up.
 
 | Adafruit Feather nRF52 Bluefruit (nRF52832) | Adafruit Ultimate GPS Breakout v3
 | --------------------------------------------------- | ---------------------------------------
@@ -62,7 +62,7 @@ This particular GPS board can take both 3.3 V and 5.0 V input, so you can use ei
 
 # Connecting the CAN-Bus module
 
-The CAN-Bus module needs to be connected to USB power. The 3.3 V outputs are not sufficient, as the board requires 5V.
+The CAN-Bus module needs to be connected to USB power. The 3.3 V outputs are not sufficient, as the board requires 5 V.
 
 | Adafruit Feather nRF52 Bluefruit (nRF52832) | MCP2515 breakout
 | --------------------------------------------------- | -----------------------
