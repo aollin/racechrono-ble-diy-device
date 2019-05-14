@@ -13,7 +13,7 @@
 //
 // Disable if you do not have GPS board connected
 //
-#define HAS_GPS
+//#define HAS_GPS
 
 #ifdef HAS_GPS
 void dummy_debug(...) {
@@ -95,7 +95,7 @@ void bluetoothStart() {
     uint8_t mac[6] = { 0, 0, 0, 0, 0, 0 };
     Bluefruit.Gap.getAddr(mac);
     char name[255];
-    snprintf(name, sizeof(name), "DIY GPS #%2X%2X", mac[4], mac[5]);
+    snprintf(name, sizeof(name), "RC DIY #%2X%2X", mac[4], mac[5]);
     Bluefruit.setName(name);     
     bluetoothSetupMainService();
     bluetoothStartAdvertising(); 
