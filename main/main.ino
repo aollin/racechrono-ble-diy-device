@@ -1,19 +1,30 @@
+#include <stdarg.h>
 #include <CAN.h>
 #include <Wire.h>
 #include <Adafruit_GPS.h>
-#include <SoftwareSerial.h>
 #include <bluefruit.h>
 #include "PacketIdInfo.h"
 
 //
 // Disable if you do not have CAN-Bus board connected
 //
-//#define HAS_CAN_BUS
+#define HAS_CAN_BUS
 
 //
 // Disable if you do not have GPS board connected
 //
 #define HAS_GPS
+
+#ifdef HAS_GPS
+void dummy_debug(...) {
+}
+#define debug dummy_debug
+#define debugln dummy_debug
+#else
+#define HAS_DEBUG
+#define debugln Serial.println
+#define debug Serial.print
+#endif
 
 BLEService mainService = BLEService(0x00000001000000fd8933990d6f411ff8);
 uint8_t tempData[20];
@@ -118,6 +129,7 @@ void canBusFilterWriteCallback(BLECharacteristic& chr, uint8_t* data, uint16_t l
             if (len == 1) {
                 canBusPacketIdInfo.reset();
                 canBusAllowUnknownPackets = false;
+                debugln("CAN-Bus command DENY"); 
             }
             break;
         case CAN_BUS_CMD_ALLOW_ALL:
@@ -126,6 +138,8 @@ void canBusFilterWriteCallback(BLECharacteristic& chr, uint8_t* data, uint16_t l
                 uint16_t notifyIntervalMs = data[1] << 8 | data[2];
                 canBusPacketIdInfo.setDefaultNotifyInterval(notifyIntervalMs); 
                 canBusAllowUnknownPackets = true;
+                debug("CAN-Bus command ALLOW interval ");
+                debugln(notifyIntervalMs); 
             }
             break;
         case CAN_BUS_CMD_ADD_PID:
@@ -133,6 +147,10 @@ void canBusFilterWriteCallback(BLECharacteristic& chr, uint8_t* data, uint16_t l
                 uint16_t notifyIntervalMs = data[1] << 8 | data[2];
                 uint32_t pid = data[3] << 24 | data[4] << 16 | data[5] << 8 | data[6];
                 canBusPacketIdInfo.setNotifyInterval(pid, notifyIntervalMs);
+                debug("CAN-Bus command ADD PID ");
+                debug(pid);
+                debug(" interval ");
+                debugln(notifyIntervalMs); 
             }
             break;
         default:
@@ -150,9 +168,12 @@ void canBusLoop() {
     // Manage CAN-Bus connection
     if (!isCanBusConnected && Bluefruit.connected()) {
         // Connect to CAN-Bus
+        debug("Connecting CAN-Bus...");
         if (CAN.begin(500E3)) {
             isCanBusConnected = true;
+            debugln("Connected!");
         } else {
+            debugln("Failed.");
             delay(3000);
         }
 
@@ -165,7 +186,7 @@ void canBusLoop() {
     }
 
     // Handle CAN-Bus data
-    if (isCanBusConnected) {
+    if (isCanBusConnected) {   
         // Try to parse packet
         int packetSize = CAN.parsePacket();
         if (packetSize > 0) {
@@ -252,6 +273,10 @@ void gpsLoop() {
 #endif
 
 void setup() {
+#ifdef HAS_DEBUG
+    Serial.begin(115200);
+    while (!Serial);
+#endif
     bluetoothStart();
     pinMode(LED_RED, OUTPUT);
     digitalWrite(LED_RED, ledState);
