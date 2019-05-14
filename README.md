@@ -21,11 +21,11 @@ MCP2515 breakout board | $5-10 (optional)
 
 # Build photos
 
-Here's a prototype build with CAN-Bus board only.
+Here's a prototype build with only CAN-Bus board connected.
 
 ![alt text](../../blob/master/photos/proto-can-bus.jpg?raw=true)
 
-Here's a prototype build with both CAN-Bus and GPS boards.
+Here's a prototype build with both CAN-Bus and GPS boards connected.
 
 ![alt text](../../blob/master/photos/proto-can-bus-gps.jpg?raw=true)
 
