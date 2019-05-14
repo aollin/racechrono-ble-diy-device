@@ -80,7 +80,7 @@ If you've connected only the GPS module, it's enough to connect a battery to the
 
 ## Bluetooth LE service
 
-The device has one service that contains four characteristics, two for GPS and two for CAN-Bus. The service UUID is 00001ff8-0000-1000-8000-00805f9b34fb. All characteristic values are big-endian and unsigned if not stated otherwise.
+The device has one Bluetooth LE service that contains four characteristics, two for GPS and two for CAN-Bus. The service UUID is 00001ff8-0000-1000-8000-00805f9b34fb. All characteristic values are big-endian and unsigned if not stated otherwise.
 
 ## CAN-Bus main characteristic (UUID 1)
 
