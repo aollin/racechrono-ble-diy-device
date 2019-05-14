@@ -69,9 +69,9 @@ If you've connected only the GPS module, it's enough to connect a battery to the
 
 Adafruit Feather nRF52 Bluefruit (nRF52832) | Step down module | External power
 --------------------------------------------------- | --------------------- | --------------------
-USB | V-out |
+USB | V-out | -
 GND | GND | GND
-         | V-in | 12V
+- | V-in | 12V
 
 
 
