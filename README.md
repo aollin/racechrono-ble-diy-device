@@ -6,7 +6,7 @@ The new DIY protocols introduced here are based on Bluetooth LE, so that both An
 
 # Performance
 
-This device as CAN-Bus reader alone (without GPS) will achieve ~20 Hz update rate when monitoring 5 different CAN-Bus PIDs. With a GPS board added, the update rate will drop to 10 Hz, probably due to the Bluetooth LE chip that is used here. The characteristic UUID 3 in notify mode (for GPS data) will halve the performance of the characteristic UUID 1 (for CAN-Bus data).
+This device as CAN-Bus reader alone (without GPS) will achieve ~20 Hz update rate when monitoring 5 different CAN-Bus PIDs. With a GPS board added, the update rate will drop to 10 Hz, probably due to the Bluetooth LE chip that is used here. The characteristic UUID 3 in notify mode (used for GPS data) will halve the performance of the characteristic UUID 1 (used for CAN-Bus data).
 
 # Parts list
 
