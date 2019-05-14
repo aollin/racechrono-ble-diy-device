@@ -1,16 +1,39 @@
-# diy-ble-gps
+# Summary
+
+This project describes a reference "Do it yourself" or "DIY" device to be used with RaceChrono Pro mobile app. The device consists of the main Adafruit board, and GPS and/or CAN-Bus boards.
+
+The new DIY protocols introduced here are based on Bluetooth LE, so that both Android and iOS phones can connect to it.
+
+The device described here is in no way ready as a product. The CAN-Bus part has been tested quite a bit, and is reasonably reliable and fast, but the GPS part is merely a quick add-on to test and demonstrate the new API.
+
+# Performance
+
+This device as CAN-Bus reader alone (without GPS) will achieve ~20 Hz update rate when monitoring 5 different CAN-Bus PIDs. With a GPS board added, the update rate will drop to 10 Hz, probably due to the Bluetooth LE chip that is used here. The characteristic UUID 3 in notify mode (used for GPS data) will halve the performance of the characteristic UUID 1 (used for CAN-Bus data).
 
 # Parts list
 
-You can build a GPS receiver, a CAN-Bus reader or a device that has both.
+Here's the main parts needed to build the device. The small stuff like casing, wires etc. are not listed. Also the required tools like soldering iron etc. are not listed here.
 
 Part | Price
 ----- | --------
 Adafruit Feather nRF52 Bluefruit (nRF52832) | $25
 Adafruit Ultimate GPS Breakout v3 | $40 (optional)
 MCP2515 breakout board | $5-10 (optional)
-Connecting wires |
-Casing |
+5V stepdown | $5 (optional)
+
+# Build photos
+
+Here's a prototype build with only CAN-Bus board connected.
+
+![alt text](../../blob/master/photos/proto-can-bus.jpg?raw=true)
+
+Here's a prototype build with both CAN-Bus and GPS boards connected.
+
+![alt text](../../blob/master/photos/proto-can-bus-gps.jpg?raw=true)
+
+And finally here's what I use for testing on a KTM motorcycle. It's CAN-Bus only, with Sumimoto connector that plugs in directly to the bike. You could use OBD-II connector or what ever is available in your vehicle.
+
+![alt text](../../blob/master/photos/built-can-bus.jpg?raw=true)
 
 # Connecting the GPS module
 
@@ -40,7 +63,7 @@ The CAN-Bus module needs to be connected to USB power. The 3.3 V outputs are not
 
 # Connecting to power
 
-If you've connected only the GPS module, it's enough to connect a battery to the battery connector onboard the nRF52. If you're connected the MCP2515, you'll need higher voltage, meaning you'll need to either connect to the USB port or somehow else power the USB pin. One option is to connect a 6-18 V => 5 V stepdown.
+If you've connected only the GPS module, it's enough to connect a battery to the battery connector onboard the nRF52. If you're connected the MCP2515, you'll need higher voltage, meaning you'll need to either connect to the USB port or somehow else power the USB pin. One option is to connect a ~12 V => 5 V stepdown.
 
 | Adafruit Feather nRF52 Bluefruit (nRF52832) | Step down module 5 V | External power
 | --------------------------------------------------- | --------------------- | --------------------
@@ -50,8 +73,6 @@ If you've connected only the GPS module, it's enough to connect a battery to the
 
 
 # Protocol description
-
-The protocol for this device is built on Bluetooth LE so that RaceChrono on both Android and iOS phones can connect to it.
 
 ## Bluetooth LE service
 
