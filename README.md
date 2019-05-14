@@ -16,6 +16,10 @@ In addition to the skills required to build the device, you'll need some skills 
 
 This device as CAN-Bus reader alone (without GPS) will achieve ~20 Hz update rate when monitoring 5 different CAN-Bus PIDs. With a GPS board added, the update rate will drop to 10 Hz, probably due to the Bluetooth LE chip that is used here. The characteristic UUID 3 in notify mode (used for GPS data) will halve the performance of the characteristic UUID 1 (used for CAN-Bus data). The GPS board runs at 5 Hz in this example, but can probably be made to run at 10 Hz with some configuration.
 
+Here's the first prototype in action (CAN-BUS reader only):
+
+[![CAN-Bus data logging demo - RaceChrono Pro v6.0](http://img.youtube.com/vi/EplCcIsqzvg/0.jpg)](http://www.youtube.com/watch?v=EplCcIsqzvg "CAN-Bus data logging demo - RaceChrono Pro v6.0")
+
 # Parts list
 
 Here's the main parts needed to build the device. The small stuff like casing, wires etc. are not listed. Also the required tools like soldering iron etc. are not listed here.
