@@ -49,10 +49,13 @@ And finally here's what I use for testing on a KTM motorcycle. It's CAN-Bus only
 
 The nRF52832 board has only one hardware serial port, so connecting it causes us to lose debug access through serial port. The nRF52840 has more ports, but its availability was not great when creating this reference implementation. The GPS needs to be disconnected when uploading new firmware, as the USB port is using the same serial port as the GPS (the only one).
 
+Software serial port is not an option as the Bluetooth library interrupts take too long, so the input goes to garbage. 
+
+This particular GPS board can take both 3.3 V and 5.0 V input, so you can use either the USB rail or 3.3 V output from the Adafruit to power up the GPS.
 
 | Adafruit Feather nRF52 Bluefruit (nRF52832) | Adafruit Ultimate GPS Breakout v3
 | --------------------------------------------------- | ---------------------------------------
-| 3.3V | VIN
+| 3.3V or USB | VIN
 | GND | GND
 | TX | RX
 | RX | TX
