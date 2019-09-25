@@ -148,7 +148,9 @@ byte index  | description
 19 | VDOP (dop * 10), invalid value 0xFF
 
 *) Sync bits is a 3-bit integer value, that increments every time the value of UUID 4 changes, and it is always same between UUID 3 and 4.
+
 **) Notice the first equation has accuracy of 0.1 meters, but range of only [-500, +6053.5] meters. So be preprared to use the second equation when out of range with the first one.
+
 ***) Notice the first equation has accuracy of 0.01 knots, but range of only [0, 655.35] knots. So be preprared to use the second equation when out of range with the first one.
 
 
