@@ -97,8 +97,8 @@ This characteristic is read and notify only.
 
 byte index  | description
 ------ | -----------------------------------------------------------------------------------------------------------------
-0-3 | 32-bit packet ID
-4-11 | 8 bytes of raw packet payload
+0-3 | 32-bit packet ID (Notice: this value is a little-endian integer, unlike other values in this API)
+4-19 | packet payload, variable length of 1-16 bytes
 
 ## CAN-Bus filter characteristic (UUID 2)
 
