@@ -151,7 +151,7 @@ byte index  | description
 
 **) Notice the first equation has accuracy of 0.1 meters, but range of only [-500, +6053.5] meters. So be preprared to use the second equation when out of range with the first one.
 
-***) Notice the first equation has accuracy of 0.01 knots, but range of only [0, 655.35] knots. So be preprared to use the second equation when out of range with the first one.
+***) Notice the first equation has accuracy of 0.01 km/h, but range of only [0, 655.35] km/h. So be preprared to use the second equation when out of range with the first one.
 
 
 ## GPS time characteristic (UUID 4)
