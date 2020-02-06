@@ -93,7 +93,7 @@ void bluetoothStart() {
     Bluefruit.configPrphBandwidth(BANDWIDTH_MAX);
     Bluefruit.begin();
     uint8_t mac[6] = { 0, 0, 0, 0, 0, 0 };
-    Bluefruit.Gap.getAddr(mac);
+    Bluefruit.getAddr(mac);
     char name[255];
     snprintf(name, sizeof(name), "RC DIY #%2X%2X", mac[4], mac[5]);
     Bluefruit.setName(name);     
@@ -119,7 +119,7 @@ void canBusNotifyLatestPacket(BLECharacteristic* characteristic) {
     characteristic->notify(tempData, pos);
 }
 
-void canBusFilterWriteCallback(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t offset) {
+void canBusFilterWriteCallback(uint16_t conn_hdl, BLECharacteristic* chr, uint8_t* data, uint16_t len) {
     if (len < 1) {
         return;
     }
