@@ -20,6 +20,10 @@ Here's the first prototype in action (CAN-BUS reader only):
 
 [![CAN-Bus data logging demo - RaceChrono Pro v6.0](http://img.youtube.com/vi/EplCcIsqzvg/0.jpg)](http://www.youtube.com/watch?v=EplCcIsqzvg "CAN-Bus data logging demo - RaceChrono Pro v6.0")
 
+# Libraries used
+* CAN-Bus library: https://github.com/sandeepmistry/arduino-CAN
+* Bluetooth LE: Adafruit
+
 # Parts list
 
 Here's the main parts needed to build the device. The small stuff like casing, wires etc. are not listed. Also the required tools like soldering iron etc. are not listed here.
