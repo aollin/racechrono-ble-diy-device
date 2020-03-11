@@ -22,6 +22,7 @@ Here's the first prototype in action (CAN-BUS reader only):
 
 # Libraries used
 * CAN-Bus library: https://github.com/sandeepmistry/arduino-CAN
+* GPS library: https://github.com/adafruit/Adafruit_GPS
 * Bluetooth LE: Adafruit
 
 # Parts list
