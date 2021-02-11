@@ -161,7 +161,7 @@ byte index  | description
 
 ## GPS time characteristic (UUID 4)
 
-This characteristic is read and notify only.
+This characteristic is read only. RaceChrono polls this characteristic when needed.
 
 byte index | description
 ----------- | ----------------------------------
