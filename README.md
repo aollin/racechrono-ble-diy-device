@@ -165,7 +165,7 @@ This characteristic is read only. RaceChrono polls this characteristic when need
 
 byte index | description
 ----------- | ----------------------------------
-0-3 | Sync bits* (3 bits) and hour and date (21 bits = (year - 2000) * 8928 + (month - 1) * 744 + (day - 1) * 24 + hour)
+0-2 | Sync bits* (3 bits) and hour and date (21 bits = (year - 2000) * 8928 + (month - 1) * 744 + (day - 1) * 24 + hour)
 
 The two GPS characteristics should be matched by comparing the sync bits. If sync bits differ, then the client waits for either of the characteristics to update.
 
