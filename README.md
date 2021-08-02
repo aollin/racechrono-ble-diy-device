@@ -146,7 +146,6 @@ Forces an update for all the configured values, even if they have not changed.
 byte index | description
 ----------- | ----------------------------------
 0 | Command type, 4 = Update all
-1 | Monitor ID
 
 #### Update
 
@@ -196,7 +195,9 @@ TODO: list exception types
 
 Will be supported in RaceChrono v7.4.0 beta.
 
-This characteristic should be exposed as WRITE_WITHOUT_RESPONSE. RaceChrono app will write this characteristic with the changes in the monitored values, defined through the 0x0005 characteristic. Each write operation can contain one or more values. Currently maximum is 4 values per WRITE, as the effective window size is limited to 20 bytes.
+This characteristic should be exposed as WRITE_WITHOUT_RESPONSE. RaceChrono app will write this characteristic with the changes in the monitored values, defined through the 0x0005 characteristic. Each write operation can contain one or more values. Currently the maximum is 4 values per WRITE, as the effective window size is limited to only 20 bytes. 
+
+Notice, the effective update rate of the monitored values will depend on how many is being monitored.
 
 byte index | description
 ----------- | ----------------------------------
