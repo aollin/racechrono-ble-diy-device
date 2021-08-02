@@ -10,7 +10,7 @@ A couple of example DIY device implementations are provided within this project.
 
 The BLE DIY device needs to explose one Bluetooth LE service, that contains several characteristics depending which features are implemented. The available features on the BLE DIY API are currently GPS, CAN-Bus and Monitor. You can choose which features to implement on your own DIY device.
 
-* The GPS feature enables your device to feed GPS data to the app. 
+* The GPS feature enables your device to feed GPS data to the app, or more specifically, build your own GPS receiver.
 * The CAN-Bus feature enables your device to feed CAN-Bus data, or pretty much any sensor data, to the app. 
 * The Monitor API enables your device to monitor live data collected by the app. Any data that is being collected by the app, from the GPS receiver or the other connected sensors can be monitored, as well as the calculated values such as lap times and the time delta.
 
