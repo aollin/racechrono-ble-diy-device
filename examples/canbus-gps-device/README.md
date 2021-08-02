@@ -38,15 +38,15 @@ MCP2515 breakout board | $5-10 (optional)
 
 Here's a prototype build with only CAN-Bus board connected.
 
-![alt text](../../../blob/master/photos/proto-can-bus.jpg?raw=true)
+![alt text](../../../../blob/master/photos/proto-can-bus.jpg?raw=true)
 
 Here's a prototype build with both CAN-Bus and GPS boards connected.
 
-![alt text](../../../blob/master/photos/proto-can-bus-gps.jpg?raw=true)
+![alt text](../../../../blob/master/photos/proto-can-bus-gps.jpg?raw=true)
 
 And finally here's what I use for testing on a KTM motorcycle. It's CAN-Bus only, with Sumimoto connector that plugs in directly to the bike. You could use OBD-II connector or what ever is available in your vehicle.
 
-![alt text](../../../blob/master/photos/built-can-bus.jpg?raw=true)
+![alt text](../../../../blob/master/photos/built-can-bus.jpg?raw=true)
 
 # Connecting the GPS module
 
