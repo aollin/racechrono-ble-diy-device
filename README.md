@@ -1,13 +1,14 @@
 # RaceChrono BLE DIY APIs
 
-This project describes the new DIY (or "Do It Yourself") protocols in RaceChrono. The protocols are based on Bluetooth LE (BLE), so that both Android and iOS phones can connect to it. 
-Example device implementations are provided within this project. They are currently all built on Adafruit's "Arduino" boards, and programmed using the Arduino IDE and Adafruit's libraries.
+This project describes the new DIY (or "Do It Yourself") protocols in RaceChrono. The protocols are based on Bluetooth LE (BLE) and are supported in RaceChrono for both Android and iOS.
+
+A couple of example device implementations are provided within this project. They are currently all built on Adafruit's "Arduino" boards, and programmed using the Arduino IDE and Adafruit's libraries.
 
 # Protocol description
 
 ## Bluetooth LE service
 
-The BLE DIY device needs to explose one Bluetooth LE service, that contains several characteristics depending which features are implemented. The available features on the BLE DIY API are currently GPS, CAN-Bus and Monitor. 
+The BLE DIY device needs to explose one Bluetooth LE service, that contains several characteristics depending which features are implemented. The available features on the BLE DIY API are currently GPS, CAN-Bus and Monitor. You can choose which features to implement on your own DIY device.
 
 The GPS feature allows one to build a GPS receiver and feed the data to RaceChrono. The CAN-Bus feature allows one to feed CAN-Bus, or basically any other collected sensor data, to RaceChrono. 
 
