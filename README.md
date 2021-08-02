@@ -166,6 +166,7 @@ byte index | description
 1-n | Rest of the bytes are defined by the result type, see below
 
 #### Success
+Everything went well. Written only for command "Add complete". 
 
 byte index | description
 ----------- | ----------------------------------
@@ -173,6 +174,7 @@ byte index | description
 1 | Monitor ID
 
 #### Payload out-of-sequence
+Payloads were received by the RaceChrono app out-of-sequence, please retry.
 
 byte index | description
 ----------- | ----------------------------------
@@ -180,6 +182,7 @@ byte index | description
 1 | Monitor ID
 
 #### Equation exception
+There was an exception when parsing the equation. The exception type -field shows what kind of problem caused the exception, and the exception position and length -fields show which part of the equation caused the exception.
 
 byte index | description
 ----------- | ----------------------------------
