@@ -101,7 +101,7 @@ This characteristic should be exposed as INDICATE and WRITE. This characteristic
 
 ### INDICATE operation
 
-The DIY device configures the Monitor API by INDICATING the following.
+The DIY device configures the Monitor API by INDICATING the following. Notice, your device should start INDICATING only after the app has connected and registered for the INDICATE messages for this characeristic.
 
 byte index | description
 ----------- | ----------------------------------
