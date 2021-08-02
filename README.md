@@ -158,7 +158,7 @@ byte index | description
 
 ### WRITE operation
 
-RaceChrono app will respond to the INDICATE operation with a WRITE operation as below. There is no WRITE response if command "Add Incomplete" is successful.
+RaceChrono app will respond to the INDICATE operations with a WRITE operation as below.
 
 byte index | description
 ----------- | ----------------------------------
@@ -166,7 +166,9 @@ byte index | description
 1-n | Rest of the bytes are defined by the result type, see below
 
 #### Success
-Everything went well. Written only for command "Add complete". 
+Everything went well. 
+
+Only for command "Add complete". 
 
 byte index | description
 ----------- | ----------------------------------
@@ -174,7 +176,9 @@ byte index | description
 1 | Monitor ID
 
 #### Payload out-of-sequence
-Payloads were received by the RaceChrono app out-of-sequence, please retry.
+Payloads were received by the RaceChrono app out-of-sequence, please retry. 
+
+Only for command "Add incomplete" and "Add complete".
 
 byte index | description
 ----------- | ----------------------------------
@@ -183,6 +187,8 @@ byte index | description
 
 #### Equation exception
 There was an exception when parsing the equation. The exception type -field shows what kind of problem caused the exception, and the exception position and length -fields show which part of the equation caused the exception.
+
+Only for command "Add incomplete" and "Add complete".
 
 byte index | description
 ----------- | ----------------------------------
