@@ -113,7 +113,7 @@ Removes all currently monitored values.
 
 byte index | description
 ----------- | ----------------------------------
-0 | Command type, 0 = Remove all.
+0 | Command type, 0 = Remove all
 
 #### Remove
 
@@ -126,9 +126,11 @@ byte index | description
 
 #### Add incompete and Add complete
 
-Adds a monitored value, defined by an equation. The added value can be referred later with the Monitor ID speficied here. 
+Adds a monitored value, defined by an equation. The added value can be referred later with the Monitor ID specified here. 
 
 If the equation does not fit to one payload, the first INDICATE operations should be "Add incomplete" and only the last should be "Add complete". The payload sequence number starts from 0, increases on every subsequent payload.
+
+TODO: Explain the equations
 
 byte index | description
 ----------- | ----------------------------------
@@ -136,8 +138,6 @@ byte index | description
 1 | Monitor ID
 2 | Payload sequence number
 3-19 | Payload
-
-TODO: Explain the equations
 
 #### Update all
 
@@ -194,11 +194,9 @@ byte index | description
 ----------- | ----------------------------------
 0 | Result, 2 = Equation exception
 1 | Monitor ID
-2-3 | Equation exception type
+2-3 | Equation exception type, 1 = No such variable, 2 = No such function, 3 = Missing left operand, 4 = Missing right operand, 5 = Parentheses mismatch, 6 = Integer out of range, 7 = Float out of range, 8 = Syntax error, 9 = Invalid number of parameters, 10 = Invalid X-axis channel, 11 = Internal error, 12 = No root filter
 4-5 | Equation exception position
 6-7 | Equation exception length
-
-TODO: list exception types
 
 ## Monitor configuration characteristic (UUID 0x0006)
 
