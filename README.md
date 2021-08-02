@@ -10,9 +10,9 @@ A couple of example DIY device implementations are provided within this project.
 
 The BLE DIY device needs to explose one Bluetooth LE service, that contains several characteristics depending which features are implemented. The available features on the BLE DIY API are currently GPS, CAN-Bus and Monitor. You can choose which features to implement on your own DIY device.
 
-The GPS feature allows one to build a GPS receiver and feed the data to RaceChrono. The CAN-Bus feature allows one to feed CAN-Bus, or basically any other collected sensor data, to RaceChrono. 
-
-The Monitor API allows one to monitor live data collected by RaceChrono; anything that is collected by the GPS or the other connected sensors, as well as the calculated values such as lap times and time delta.
+* The GPS feature allows one to build a GPS receiver and feed the data to RaceChrono. 
+* The CAN-Bus feature allows one to feed CAN-Bus, or basically any other collected sensor data, to RaceChrono. 
+* The Monitor API allows one to monitor live data collected by RaceChrono; anything that is collected by the GPS or the other connected sensors, as well as the calculated values such as lap times and time delta.
 
 The service UUID is 00001ff8-0000-1000-8000-00805f9b34fb (or 0x1ff8 as 16-bit UUID). All encoded byte values are big-endian and unsigned if not stated otherwise.
 
