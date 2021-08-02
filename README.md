@@ -6,7 +6,7 @@ A couple of example DIY device implementations are provided within this project.
 
 # API description
 
-## Bluetooth LE service
+## Bluetooth LE service (UUID 0x1FF8)
 
 The BLE DIY device needs to explose one Bluetooth LE service, that contains several characteristics depending which features are implemented. The available features on the BLE DIY API are currently GPS, CAN-Bus and Monitor. You can choose which features to implement on your own DIY device.
 
