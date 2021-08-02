@@ -7,11 +7,17 @@ Example device implementations are provided within this project. They are curren
 
 ## Bluetooth LE service
 
-The device has one Bluetooth LE service that contains four characteristics, two for GPS and two for CAN-Bus. The service UUID is 00001ff8-0000-1000-8000-00805f9b34fb (or 0x1ff8 as 16-bit UUID). All characteristic values are big-endian and unsigned if not stated otherwise.
+The BLE DIY device needs to explose one Bluetooth LE service, that contains several characteristics depending which features are implemented. The available features on the BLE DIY API are currently GPS, CAN-Bus and Monitor. 
+
+The GPS feature allows one to build a GPS receiver and feed the data to RaceChrono. The CAN-Bus feature allows one to feed CAN-Bus, or basically any other collected sensor data, to RaceChrono. 
+
+The Monitor API allows one to monitor live data collected by RaceChrono; anything that is collected by the GPS or the other connected sensors, as well as the calculated values such as lap times and time delta.
+
+The service UUID is 00001ff8-0000-1000-8000-00805f9b34fb (or 0x1ff8 as 16-bit UUID). All encoded byte values are big-endian and unsigned if not stated otherwise.
 
 ## CAN-Bus main characteristic (UUID 0x0001)
 
-This characteristic is read and notify only.
+This characteristic should be exposed as READ and NOTIFY.
 
 byte index  | description
 ------ | -----------------------------------------------------------------------------------------------------------------
@@ -20,7 +26,7 @@ byte index  | description
 
 ## CAN-Bus filter characteristic (UUID 0x0002)
 
-This characteristic is write only.
+This characteristic should be exposed as WRITE (with response).
 
 ### Deny all
 
@@ -51,7 +57,7 @@ byte index  | description
 
 ## GPS main characteristic (UUID 0x0003)
 
-This characteristic is read and notify only.
+This characteristic should be exposed as READ and NOTIFY.
 
 byte index  | description
 ------ | -----------------------------------------------------------------------------------------------------------------
@@ -65,7 +71,7 @@ byte index  | description
 18 | HDOP (dop * 10), invalid value 0xFF
 19 | VDOP (dop * 10), invalid value 0xFF
 
-*) Sync bits is a 3-bit integer value, that increments every time the value of UUID 4 changes, and it is always same between UUID 3 and 4.
+*) Sync bits is a 3-bit integer value, that increments every time the value of UUID 4 changes, and it is always same between UUID 0x0003 and 0x0004.
 
 **) Notice the first equation has accuracy of 0.1 meters, but range of only [-500, +6053.5] meters. So be preprared to use the second equation when out of range with the first one.
 
@@ -74,7 +80,11 @@ byte index  | description
 
 ## GPS time characteristic (UUID 0x0004)
 
-This characteristic is read and notify only. RaceChrono reads (polls) this characteristic when needed, but some other app might want it to be notified, so please support that too.
+This characteristic should be exposed as READ and NOTIFY.
+
+### Read operation
+
+RaceChrono reads (polls) this characteristic when needed, but some other app might want it to be notified, in theory.
 
 byte index | description
 ----------- | ----------------------------------
@@ -82,6 +92,77 @@ byte index | description
 
 The two GPS characteristics should be matched by comparing the sync bits. If sync bits differ, then the client waits for either of the characteristics to update.
 
-*) Sync bits is a 3-bit integer value, that increments every time the value of UUID 4 changes, and it is always same between UUID 3 and 4.
+*) Sync bits is a 3-bit integer value, that increments every time the value of UUID 4 changes, and it is always same between UUID 0x0003 and 0x0004.
+
+## Monitor configuration characteristic (UUID 0x0005)
+
+Will be supported in RaceChrono v7.4.0 beta.
+
+This characteristic should be exposed as INDICATE and WRITE. This characteristic is used by the DIY device to define the values that it wants to monitor through the Monitor API.
+
+### INDICATE operation
+
+The DIY device configures the Monitor API by INDICATING the following.
+
+byte index | description
+----------- | ----------------------------------
+0 | Command type, 0=Remove all, 1=Remove, 2=Add incomplete, 3=Add complete, 4=Update all, 5=Update
+1-n | Rest of the bytes are defined by the command type, see below
+
+byte index | description
+----------- | ----------------------------------
+0 | 0=Remove all, 4=Update all
+
+byte index | description
+----------- | ----------------------------------
+0 | 1=Remove, 5=Update
+1 | Monitor ID
+
+byte index | description
+----------- | ----------------------------------
+0 | 2=Add incomplete, 3=Add complete
+1 | Monitor ID
+2 | Payload part sequence number (starts from 0, increases on every subsequent payload part)
+3-19 | Payload part
+
+TODO: Explain the payload
+
+### WRITE operation
+
+RaceChrono app will respond to the INDICATE operation with a WRITE operation as below. There is no WRITE response if command "Add Incomplete" is successful.
+
+byte index | description
+----------- | ----------------------------------
+0 | Result, 0=Success, 1=Payload out-of-sequence, 2=Equation exception
+1-n | Rest of the bytes are defined by the result type, see below
+
+byte index | description
+----------- | ----------------------------------
+0 | Result, 0=Success, 1=Payload out-of-sequence
+1 | Monitor ID
+
+byte index | description
+----------- | ----------------------------------
+0 | 2=Equation exception
+1 | Monitor ID
+2-3 | Equation exception type (TODO: list types)
+4-5 | Equation exception position
+6-7 | Equation exception length
+
+## Monitor configuration characteristic (UUID 0x0006)
+
+Will be supported in RaceChrono v7.4.0 beta.
+
+This characteristic should be exposed as WRITE_WITHOUT_RESPONSE. RaceChrono app will write this characteristic with the changes in the monitored values, defined through the 0x0005 characteristic. Each write operation can contain one or more values. Currently maximum is 4 values per WRITE, as the effective window size is limited to 20 bytes.
+
+byte index | description
+----------- | ----------------------------------
+0 | Monitor ID
+1-4 | 32-bit integer value
+... | ...
+n * 5 + 0 | Monitor ID
+n * 5 + 1-4 | 32-bit integer value
+
+
 
 
