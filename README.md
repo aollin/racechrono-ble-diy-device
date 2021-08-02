@@ -198,7 +198,7 @@ byte index | description
 4-5 | Equation exception position
 6-7 | Equation exception length
 
-## Monitor configuration characteristic (UUID 0x0006)
+## Monitor values characteristic (UUID 0x0006)
 
 Will be supported in RaceChrono v7.4.0 beta.
 
