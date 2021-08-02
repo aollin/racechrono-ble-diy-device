@@ -2,8 +2,6 @@
 
 This project describes a reference "Do it yourself" or "DIY" device to be used with RaceChrono Pro mobile app. The device consists of the main Adafruit board, and GPS and/or CAN-Bus boards.
 
-The new DIY protocols introduced here are based on Bluetooth LE, so that both Android and iOS phones can connect to it.
-
 The device described here is in no way ready as a product. The CAN-Bus part has been tested quite a bit, and is reasonably reliable and fast, but the GPS part is merely a quick add-on to test and demonstrate the new API. Also the GPS board might not be the best choice for racing. I just bought something that is easy to connect.
 
 # Required knowledge
