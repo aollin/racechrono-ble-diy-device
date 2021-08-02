@@ -2,7 +2,7 @@
 
 This project describes the new DIY (or "Do It Yourself") APIs in RaceChrono. The APIs are based on Bluetooth LE (BLE) and are supported in the RaceChrono app for both Android and iOS.
 
-A couple of example device implementations are provided within this project. They are currently all built on Adafruit's "Arduino" boards, and programmed using the Arduino IDE and Adafruit's libraries.
+A couple of example DIY device implementations are provided within this project. They are currently all built on Adafruit's "Arduino" boards, and programmed using the Arduino IDE and Adafruit's libraries.
 
 # API description
 
