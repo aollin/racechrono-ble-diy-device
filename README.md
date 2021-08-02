@@ -82,8 +82,6 @@ byte index  | description
 
 This characteristic should be exposed as READ and NOTIFY.
 
-### Read operation
-
 RaceChrono reads (polls) this characteristic when needed, but some other app might want it to be notified, in theory.
 
 byte index | description
@@ -106,26 +104,58 @@ The DIY device configures the Monitor API by INDICATING the following.
 
 byte index | description
 ----------- | ----------------------------------
-0 | Command type, 0=Remove all, 1=Remove, 2=Add incomplete, 3=Add complete, 4=Update all, 5=Update
+0 | Command type
 1-n | Rest of the bytes are defined by the command type, see below
 
-byte index | description
------------ | ----------------------------------
-0 | 0=Remove all, 4=Update all
+#### Remove all
+
+Removes all currently monitored values.
 
 byte index | description
 ----------- | ----------------------------------
-0 | 1=Remove, 5=Update
+0 | Command type, 0 = Remove all.
+
+#### Remove
+
+Removes the monitored value with the specified Monitor ID.
+
+byte index | description
+----------- | ----------------------------------
+0 | Command type, 1 = Remove
 1 | Monitor ID
 
+#### Add incompete and Add complete
+
+Adds a monitored value, defined by an equation. The added value can be referred later with the Monitor ID speficied here. 
+
+If the equation does not fit to one payload, the first INDICATE operations should be "Add incomplete" and only the last should be "Add complete". The payload sequence number starts from 0, increases on every subsequent payload.
+
 byte index | description
 ----------- | ----------------------------------
-0 | 2=Add incomplete, 3=Add complete
+0 | Command type, 2 = Add incomplete, 3 = Add complete
 1 | Monitor ID
-2 | Payload part sequence number (starts from 0, increases on every subsequent payload part)
-3-19 | Payload part
+2 | Payload sequence number
+3-19 | Payload
 
-TODO: Explain the payload
+TODO: Explain the equations
+
+#### Update all
+
+Forces an update for all the configured values, even if they have not changed.
+
+byte index | description
+----------- | ----------------------------------
+0 | Command type, 4 = Update all
+1 | Monitor ID
+
+#### Update
+
+Forces an update for the value with the specified Monitor ID, even if it has not changed.
+
+byte index | description
+----------- | ----------------------------------
+0 | Command type, 5 = Update
+1 | Monitor ID
 
 ### WRITE operation
 
@@ -133,21 +163,34 @@ RaceChrono app will respond to the INDICATE operation with a WRITE operation as 
 
 byte index | description
 ----------- | ----------------------------------
-0 | Result, 0=Success, 1=Payload out-of-sequence, 2=Equation exception
+0 | Result
 1-n | Rest of the bytes are defined by the result type, see below
 
-byte index | description
------------ | ----------------------------------
-0 | Result, 0=Success, 1=Payload out-of-sequence
-1 | Monitor ID
+#### Success
 
 byte index | description
 ----------- | ----------------------------------
-0 | 2=Equation exception
+0 | Result, 0 = Success
 1 | Monitor ID
-2-3 | Equation exception type (TODO: list types)
+
+#### Payload out-of-sequence
+
+byte index | description
+----------- | ----------------------------------
+0 | Result, 1 = Payload out-of-sequence
+1 | Monitor ID
+
+#### Equation exception
+
+byte index | description
+----------- | ----------------------------------
+0 | Result, 2 = Equation exception
+1 | Monitor ID
+2-3 | Equation exception type
 4-5 | Equation exception position
 6-7 | Equation exception length
+
+TODO: list exception types
 
 ## Monitor configuration characteristic (UUID 0x0006)
 
