@@ -1,6 +1,6 @@
 # RaceChrono BLE DIY APIs
 
-This project describes the new DIY (or "Do It Yourself") APIs in RaceChrono. The APIs are based on Bluetooth LE (BLE) and are supported in the RaceChrono app for both Android and iOS.
+This project describes the new DIY (or "Do It Yourself") APIs in the RaceChrono app or "the app". The APIs are based on Bluetooth LE (BLE) and are supported in the app for both Android and iOS platforms.
 
 A couple of example DIY device implementations are provided within this project. They are currently all built on Adafruit's "Arduino" boards, and programmed using the Arduino IDE and Adafruit's libraries.
 
@@ -10,9 +10,9 @@ A couple of example DIY device implementations are provided within this project.
 
 The BLE DIY device needs to explose one Bluetooth LE service, that contains several characteristics depending which features are implemented. The available features on the BLE DIY API are currently GPS, CAN-Bus and Monitor. You can choose which features to implement on your own DIY device.
 
-* The GPS feature allows one to build a GPS receiver and feed the data to RaceChrono. 
-* The CAN-Bus feature allows one to feed CAN-Bus, or basically any other collected sensor data, to RaceChrono. 
-* The Monitor API allows one to monitor live data collected by RaceChrono; anything that is collected by the GPS or the other connected sensors, as well as the calculated values such as lap times and time delta.
+* The GPS feature enables your device to feed GPS data to the app. 
+* The CAN-Bus feature enables your device to feed CAN-Bus data, or pretty much any sensor data, to the app. 
+* The Monitor API enables your device to monitor live data collected by the app. Any data that is being collected by the app, from the GPS receiver or the other connected sensors can be monitored, as well as the calculated values such as lap times and the time delta.
 
 The service UUID is 00001ff8-0000-1000-8000-00805f9b34fb (or 0x1ff8 as 16-bit UUID). All encoded byte values are big-endian and unsigned if not stated otherwise.
 
@@ -83,7 +83,7 @@ byte index  | description
 
 This characteristic should be exposed as READ and NOTIFY.
 
-RaceChrono reads (polls) this characteristic when needed, but some other app might want it to be notified, in theory.
+The app reads (polls) this characteristic when needed, but some other app might want it to be notified, in theory.
 
 byte index | description
 ----------- | ----------------------------------
@@ -159,7 +159,7 @@ byte index | description
 
 ### WRITE operation
 
-RaceChrono app will respond to the INDICATE operations with a WRITE operation as below.
+The app will respond to the INDICATE operations with a WRITE operation as below.
 
 byte index | description
 ----------- | ----------------------------------
@@ -177,7 +177,7 @@ byte index | description
 1 | Monitor ID
 
 #### Payload out-of-sequence
-Payloads were received by the RaceChrono app out-of-sequence, please retry. 
+Payloads were received by the app out-of-sequence, please retry. 
 
 Only for command "Add incomplete" and "Add complete".
 
@@ -203,7 +203,7 @@ byte index | description
 
 Will be supported in RaceChrono v7.4.0 beta.
 
-This characteristic should be exposed as WRITE_WITHOUT_RESPONSE. RaceChrono app will write this characteristic with the changes in the monitored values, defined through the 0x0005 characteristic. Each write operation can contain one or more values. Currently the maximum is 4 values per WRITE, as the effective window size is limited to only 20 bytes. 
+This characteristic should be exposed as WRITE_WITHOUT_RESPONSE. The app will write this characteristic with the changes in the monitored values, defined through the 0x0005 characteristic. Each write operation can contain one or more values. Currently the maximum is 4 values per WRITE, as the effective window size is limited to only 20 bytes. 
 
 Notice, the effective update rate of the monitored values will depend on how many is being monitored.
 
