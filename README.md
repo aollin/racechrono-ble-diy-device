@@ -131,7 +131,7 @@ Adds a monitored value, defined by an equation. The added value can be referred 
 
 If the equation does not fit to one payload, the first INDICATE operations should be "Add incomplete" and only the last should be "Add complete". The payload sequence number starts from 0, increases on every subsequent payload.
 
-TODO: Explain the equations
+Please see this documentation for the equations reference: https://racechrono.com/support/equations
 
 byte index | description
 ----------- | ----------------------------------
