@@ -203,7 +203,9 @@ byte index | description
 
 Will be supported in RaceChrono v7.4.0 beta.
 
-This characteristic should be exposed as WRITE_WITHOUT_RESPONSE. The app will write this characteristic with the changes in the monitored values, defined through the 0x0005 characteristic. Each write operation can contain one or more values. Currently the maximum is 4 values per WRITE, as the effective window size is limited to only 20 bytes. 
+This characteristic should be exposed as WRITE_WITHOUT_RESPONSE. The app will write this characteristic with the changes in the monitored values, defined through the 0x0005 characteristic. Each write operation can contain one or more values. Currently the maximum is 4 values per WRITE, as the effective window size is limited to only 20 bytes.
+
+Latitude/Longitude is returned as degrees * 6_000_000 (Note the difference from feeding the data in), signed 2's complement, invalid value 0x7FFFFFFF.
 
 Notice, the effective update rate of the monitored values will depend on how many is being monitored.
 
