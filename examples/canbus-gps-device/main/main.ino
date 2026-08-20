@@ -232,8 +232,13 @@ void gpsLoop() {
         int longitude = gps->longitude_fixed; // / 10000000) * 6000000 + (gps->longitude_fixed % 10000000);
 
         // Calculate altitude, speed and bearing
-        int altitude = gps->altitude > 6000.f ? (max(0, round(gps->altitude + 500.f)) & 0x7FFF) | 0x8000 : max(0, round((gps->altitude + 500.f) * 10.f)) & 0x7FFF; 
-        int speed = gps->speed > 600.f ? ((max(0, round(gps->speed * 10.f))) & 0x7FFF) | 0x8000 : (max(0, round(gps->speed * 100.f))) & 0x7FFF; 
+        // Hand over to the coarse equations as soon as the fine ones overflow the
+        // 15 bits they are masked to: (0x7FFF / 10) - 500 = 2776.7 m, and
+        // 0x7FFF / 100 = 327.67 km/h. Switching any later leaves values in between
+        // encoding in fine mode, where they wrap and decode as a plausible but
+        // wrong number.
+        int altitude = gps->altitude > 2776.7f ? (max(0, round(gps->altitude + 500.f)) & 0x7FFF) | 0x8000 : max(0, round((gps->altitude + 500.f) * 10.f)) & 0x7FFF; 
+        int speed = gps->speed > 327.67f ? ((max(0, round(gps->speed * 10.f))) & 0x7FFF) | 0x8000 : (max(0, round(gps->speed * 100.f))) & 0x7FFF; 
         int bearing = max(0, round(gps->angle * 100.f));
 
         // Create main data

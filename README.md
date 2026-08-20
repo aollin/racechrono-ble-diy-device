@@ -74,9 +74,9 @@ byte index  | description
 
 *) Sync bits is a 3-bit integer value, that increments every time the value of UUID 4 changes, and it is always same between UUID 0x0003 and 0x0004.
 
-**) Notice the first equation has accuracy of 0.1 meters, but range of only [-500, +6053.5] meters. So be preprared to use the second equation when out of range with the first one.
+**) Notice the first equation has accuracy of 0.1 meters, but range of only [-500, +2776.7] meters — it is masked to 15 bits, so its ceiling is (0x7FFF / 10) - 500, not (0xFFFF / 10) - 500. So be preprared to use the second equation when out of range with the first one.
 
-***) Notice the first equation has accuracy of 0.01 km/h, but range of only [0, 655.35] km/h. So be preprared to use the second equation when out of range with the first one.
+***) Notice the first equation has accuracy of 0.01 km/h, but range of only [0, 327.67] km/h — it is masked to 15 bits, so its ceiling is 0x7FFF / 100, not 0xFFFF / 100. So be preprared to use the second equation when out of range with the first one.
 
 
 ## GPS time characteristic (UUID 0x0004)
