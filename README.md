@@ -2,7 +2,7 @@
 
 This project describes the new DIY (or "Do It Yourself") APIs in the RaceChrono app or "the app". The APIs are based on Bluetooth LE (BLE) and are supported in the app for both Android and iOS platforms.
 
-A couple of example DIY device implementations are provided within this project. They are currently all built on Adafruit's "Arduino" boards, and programmed using the Arduino IDE and Adafruit's libraries.
+A library exposing the Monitor and CAN APIs is available in `lib/` targeting the ESP32 microcontroller with the Arduino framework. A couple of example DIY device implementations are provided within this project. They are currently all built on Adafruit's "Arduino" boards, and programmed using the Arduino IDE and Adafruit's libraries.
 
 # API description
 
